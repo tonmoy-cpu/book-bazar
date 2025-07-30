@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { BookOpen, Code, TrendingUp, GraduationCap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const categories = [
   {
@@ -33,6 +34,8 @@ const categories = [
 ];
 
 const Categories = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-16 bg-muted/30">
       <div className="container">
@@ -50,6 +53,7 @@ const Categories = () => {
               <Button
                 key={category.id}
                 variant="category"
+                onClick={() => navigate('/books')}
                 className="h-auto p-6 flex-col space-y-4 group"
               >
                 <div className={`p-4 rounded-full bg-gradient-to-br ${category.color} text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>

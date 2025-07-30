@@ -1,63 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star, ShoppingCart } from "lucide-react";
-import bookFiction from "@/assets/book-fiction.jpg";
-import bookTech from "@/assets/book-tech.jpg";
-import bookSelfHelp from "@/assets/book-selfhelp.jpg";
-import bookExam from "@/assets/book-exam.jpg";
-
-const featuredBooks = [
-  {
-    id: 1,
-    title: "The Digital Renaissance",
-    author: "Sarah Chen",
-    category: "Fiction",
-    price: 24.99,
-    originalPrice: 29.99,
-    rating: 4.8,
-    reviews: 342,
-    image: bookFiction,
-    badge: "Bestseller",
-  },
-  {
-    id: 2,
-    title: "React Mastery Guide",
-    author: "Alex Thompson",
-    category: "Tech",
-    price: 39.99,
-    originalPrice: 49.99,
-    rating: 4.9,
-    reviews: 156,
-    image: bookTech,
-    badge: "New Release",
-  },
-  {
-    id: 3,
-    title: "Mindful Living",
-    author: "Dr. Maya Patel",
-    category: "Self-Help",
-    price: 19.99,
-    originalPrice: 24.99,
-    rating: 4.7,
-    reviews: 289,
-    image: bookSelfHelp,
-    badge: "Popular",
-  },
-  {
-    id: 4,
-    title: "Physics Fundamentals",
-    author: "Prof. James Wilson",
-    category: "Exam Prep",
-    price: 34.99,
-    originalPrice: 39.99,
-    rating: 4.6,
-    reviews: 127,
-    image: bookExam,
-    badge: "Recommended",
-  },
-];
+import { booksData } from "@/data/books";
+import { useCart } from "@/contexts/CartContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "@/components/ui/sonner";
 
 const FeaturedBooks = () => {
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
+  
+  // Get first 4 books as featured
+  const featuredBooks = booksData.slice(0, 4);
+
+  const handleAddToCart = (book: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart(book);
+    toast.success(`Added "${book.title}" to cart`);
+  };
+
   return (
     <section className="py-16">
       <div className="container">
@@ -70,7 +31,11 @@ const FeaturedBooks = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredBooks.map((book) => (
-            <Card key={book.id} className="group overflow-hidden border-0 shadow-book hover:shadow-elevated transition-all duration-300 hover:-translate-y-2">
+            <Card 
+              key={book.id} 
+              className="group overflow-hidden border-0 shadow-book hover:shadow-elevated transition-all duration-300 hover:-translate-y-2 cursor-pointer"
+              onClick={() => navigate(`/book/${book.id}`)}
+            >
               <CardContent className="p-0">
                 <div className="relative aspect-[3/4] overflow-hidden">
                   <img
@@ -86,6 +51,7 @@ const FeaturedBooks = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <Button
                     size="icon"
+                    onClick={(e) => handleAddToCart(book, e)}
                     className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-primary hover:bg-primary/90"
                   >
                     <ShoppingCart className="h-4 w-4" />
@@ -132,7 +98,10 @@ const FeaturedBooks = () => {
                         )}
                       </div>
                     </div>
-                    <Button variant="book" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Button 
+                      variant="book" 
+                      size="sm" 
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       View Details
                     </Button>
                   </div>
@@ -143,7 +112,7 @@ const FeaturedBooks = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg">
+          <Button variant="outline" size="lg" onClick={() => navigate('/books')}>
             View All Books
           </Button>
         </div>

@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { BookOpen, ArrowRight } from "lucide-react";
 import heroBooks from "@/assets/hero-books.jpg";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative overflow-hidden bg-gradient-hero py-20 sm:py-32">
       <div className="absolute inset-0 bg-background/10" />
@@ -23,12 +26,12 @@ const Hero = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="hero" size="lg" className="group">
+              <Button variant="hero" size="lg" className="group" onClick={() => navigate('/books')}>
                 <BookOpen className="h-5 w-5" />
                 Explore Collection
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
-              <Button variant="outline" size="lg" className="bg-background/20 border-primary-foreground/30 text-primary-foreground hover:bg-background/30">
+              <Button variant="outline" size="lg" className="bg-background/20 border-primary-foreground/30 text-primary-foreground hover:bg-background/30" onClick={() => navigate('/books')}>
                 Browse Categories
               </Button>
             </div>
